@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASHÉ — Laundry</title>
+
+    <!-- Bootstrap dari folder project kamu -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+    <script type="text/javascript" src="assets/js/jquery.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+
+    <style>
+        :root{
+            --pink:#f3a6c1;
+            --pink-dark:#d96f9b;
+            --pink-soft:#fff5f9;
+            --white:#ffffff;
+            --text:#4d3540;
+        }
+
+        *{box-sizing:border-box;scroll-behavior:smooth}
+
+        body{
+            margin:0;
+            font-family:"Segoe UI",Arial,sans-serif;
+            background:var(--pink-soft);
+            color:var(--text);
+            overflow-x:hidden;
+        }
+
+        .navbar-custom{
+            background:rgba(255,255,255,.96);
+            border:0;
+            margin:0;
+            border-radius:0;
+            box-shadow:0 3px 18px rgba(217,111,155,.12);
+            position:sticky;
+            top:0;
+            z-index:999;
+        }
+
+        .navbar-brand{
+            color:var(--pink-dark)!important;
+            font-weight:800;
+            font-size:21px;
+        }
+
+        .navbar-nav>li>a{
+            color:var(--text)!important;
+            font-weight:600;
+            transition:.25s;
+        }
+
+        .navbar-nav>li>a:hover{color:var(--pink-dark)!important}
+
+        .btn-pink{
+            background:var(--pink-dark);
+            color:#fff!important;
+            border:0;
+            border-radius:25px;
+            padding:11px 23px;
+            font-weight:700;
+            transition:.25s;
+            display:inline-block;
+            text-decoration:none!important;
+        }
+
+        .btn-pink:hover{
+            transform:translateY(-3px);
+            box-shadow:0 9px 20px rgba(217,111,155,.25);
+        }
+
+        .btn-outline-pink{
+            border:2px solid var(--pink-dark);
+            color:var(--pink-dark)!important;
+            background:#fff;
+            border-radius:25px;
+            padding:9px 22px;
+            font-weight:700;
+            transition:.25s;
+            display:inline-block;
+            text-decoration:none!important;
+        }
+
+        .btn-outline-pink:hover{
+            background:var(--pink-dark);
+            color:#fff!important;
+        }
+
+        .hero{
+            min-height:650px;
+            display:flex;
+            align-items:center;
+            position:relative;
+            overflow:hidden;
+            padding:80px 0;
+        }
+
+        .hero h1{
+            font-size:52px;
+            line-height:1.1;
+            font-weight:800;
+            margin-bottom:22px;
+        }
+
+        .hero h1 span{color:var(--pink-dark)}
+
+        .hero p{
+            font-size:18px;
+            line-height:1.8;
+            max-width:570px;
+            color:#765b67;
+        }
+
+        .hero-buttons{margin-top:28px}
+        .hero-buttons a{margin-right:10px;margin-bottom:10px}
+
+        .laundry-art{
+            width:380px;
+            height:380px;
+            margin:auto;
+            position:relative;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .washer{
+            width:245px;
+            height:245px;
+            background:#fff;
+            border:10px solid var(--pink);
+            border-radius:35px;
+            box-shadow:0 22px 50px rgba(217,111,155,.2);
+            position:relative;
+            animation:float 3.5s ease-in-out infinite;
+        }
+
+        .washer-top{
+            height:45px;
+            border-bottom:5px solid var(--pink-soft);
+            display:flex;
+            align-items:center;
+            padding:0 16px;
+            gap:8px;
+        }
+
+        .dot{width:10px;height:10px;border-radius:50%;background:var(--pink)}
+        .door{
+            width:135px;
+            height:135px;
+            border-radius:50%;
+            background:var(--pink-soft);
+            border:9px solid var(--pink-dark);
+            position:absolute;
+            top:72px;
+            left:45px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .door:after{
+            content:"";
+            width:72px;
+            height:72px;
+            border-radius:50%;
+            background:var(--pink);
+            opacity:.75;
+            animation:spin 5s linear infinite;
+        }
+
+        .bubble{
+            position:absolute;
+            width:20px;
+            height:20px;
+            border:3px solid var(--pink);
+            border-radius:50%;
+            animation:bubble 4s ease-in-out infinite;
+        }
+
+        .b1{right:35px;top:45px}.b2{left:35px;top:95px;width:14px;height:14px;animation-delay:1s}
+        .b3{right:60px;bottom:55px;width:28px;height:28px;animation-delay:2s}
+
+        .section{padding:85px 0}
+        .section-title{text-align:center;margin-bottom:50px}
+        .section-title h2{font-size:36px;font-weight:800;margin-bottom:12px}
+        .section-title p{color:#806875}
+
+        .stats{
+            margin-top:-35px;
+            position:relative;
+            z-index:5;
+        }
+
+        .stat-box{
+            background:#fff;
+            border-radius:18px;
+            padding:25px 15px;
+            text-align:center;
+            box-shadow:0 10px 30px rgba(217,111,155,.1);
+            margin-bottom:20px;
+            transition:.3s;
+        }
+
+        .stat-box:hover{transform:translateY(-7px)}
+        .stat-box h3{color:var(--pink-dark);font-weight:800;font-size:30px;margin:0 0 6px}
+
+        .service-card{
+            background:#fff;
+            border:0;
+            border-radius:20px;
+            padding:30px 22px;
+            min-height:285px;
+            margin-bottom:25px;
+            box-shadow:0 10px 28px rgba(217,111,155,.09);
+            transition:.3s;
+            text-align:center;
+        }
+
+        .service-card:hover{
+            transform:translateY(-9px);
+            box-shadow:0 18px 35px rgba(217,111,155,.18);
+        }
+
+        .service-icon{
+            width:75px;height:75px;
+            margin:0 auto 18px;
+            border-radius:22px;
+            background:var(--pink-soft);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:38px;
+        }
+
+        .service-card h4{font-weight:800}
+        .service-card p{color:#806875;line-height:1.7}
+        .price{color:var(--pink-dark);font-size:17px;font-weight:800}
+
+        .washe-brand{
+            letter-spacing:1px;
+            font-size:24px!important;
+        }
+        .washe-brand span{font-size:20px}
+
+        /* ===== WASHÉ ANIMATED LANDING ===== */
+        .navbar-custom{
+            backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);
+        }
+        .navbar-nav>li>a{
+            margin:9px 3px;
+            padding:10px 15px!important;
+            border-radius:22px;
+        }
+        .navbar-nav>li>a:hover{
+            background:var(--pink-soft);
+            transform:translateY(-2px);
+        }
+        .navbar-nav>li:last-child>a{
+            background:var(--pink-dark);
+            color:#fff!important;
+            padding:10px 22px!important;
+            margin-left:8px;
+            box-shadow:0 7px 18px rgba(217,111,155,.22);
+            animation:loginPulse 2.4s ease-in-out infinite;
+        }
+        .navbar-nav>li:last-child>a:hover{
+            background:var(--pink-dark);
+            color:#fff!important;
+        }
+
+        .hero{
+            min-height:720px;
+            background:
+                radial-gradient(circle at 15% 25%, rgba(243,166,193,.25) 0 70px, transparent 71px),
+                radial-gradient(circle at 90% 18%, rgba(243,166,193,.18) 0 110px, transparent 111px),
+                var(--pink-soft);
+        }
+        .hero:before,.hero:after{
+            content:"";
+            position:absolute;
+            border:2px solid rgba(217,111,155,.16);
+            border-radius:50%;
+            animation:orb 7s ease-in-out infinite;
+        }
+        .hero:before{width:170px;height:170px;left:-70px;bottom:40px}
+        .hero:after{width:230px;height:230px;right:-90px;top:45px;animation-delay:1.5s}
+
+        .washe-title{
+            font-size:clamp(72px,10vw,135px)!important;
+            line-height:.82!important;
+            letter-spacing:8px;
+            margin:8px 0 20px!important;
+            color:var(--pink-dark);
+            text-shadow:0 10px 0 rgba(243,166,193,.20);
+            animation:titleFloat 3.2s ease-in-out infinite;
+        }
+        .washe-tagline{
+            display:inline-block;
+            margin:0 0 18px;
+            padding:8px 17px;
+            border-radius:30px;
+            background:#fff;
+            color:var(--pink-dark);
+            font-size:20px;
+            font-weight:800;
+            box-shadow:0 8px 22px rgba(217,111,155,.10);
+            animation:tagFloat 3.2s ease-in-out infinite;
+            animation-delay:.3s;
+        }
+
+        .hero-buttons .btn-pink{animation:buttonFloat 2.8s ease-in-out infinite}
+        .hero-buttons .btn-outline-pink{animation:buttonFloat 2.8s ease-in-out infinite;animation-delay:.25s}
+
+        .bubble{
+            box-shadow:0 0 0 7px rgba(243,166,193,.08);
+        }
+        .b1{animation-duration:3.2s}.b2{animation-duration:4.5s}.b3{animation-duration:3.8s}
+        .laundry-art:before,.laundry-art:after{
+            content:"✦";
+            position:absolute;
+            color:var(--pink-dark);
+            font-size:24px;
+            animation:sparkle 2.2s ease-in-out infinite;
+        }
+        .laundry-art:before{top:35px;left:45px}
+        .laundry-art:after{bottom:35px;right:35px;animation-delay:1s}
+
+        .service-click,.process-click{
+            cursor:pointer;
+            position:relative;
+            overflow:hidden;
+        }
+        .service-click:after,.process-click:after{
+            content:"";
+            position:absolute;
+            width:90px;height:90px;
+            border-radius:50%;
+            background:rgba(243,166,193,.13);
+            right:-35px;top:-35px;
+            transition:.35s;
+        }
+        .service-click:hover:after,.process-click:hover:after{
+            transform:scale(2.2);
+        }
+        .service-more,.process-more{
+            color:var(--pink-dark);
+            font-size:13px;
+            font-weight:800;
+            margin-top:14px;
+        }
+        .service-detail,.process-detail{
+            max-height:0;
+            opacity:0;
+            overflow:hidden;
+            transition:max-height .45s ease,opacity .35s ease,margin .35s ease;
+            color:#806875;
+            line-height:1.7;
+            margin-top:0;
+        }
+        .service-click.open,.process-click.open{
+            border:2px solid rgba(217,111,155,.25);
+            box-shadow:0 18px 40px rgba(217,111,155,.18);
+        }
+        .service-click.open .service-detail,.process-click.open .process-detail{
+            max-height:160px;
+            opacity:1;
+            margin-top:12px;
+        }
+        .service-click.open .service-more,.process-click.open .process-more{
+            font-size:0;
+        }
+        .service-click.open .service-more:after,.process-click.open .process-more:after{
+            content:"Klik untuk tutup ↑";
+            font-size:13px;
+        }
+
+        .process-card{
+            min-height:245px;
+            transition:.35s;
+        }
+        .process-card:hover{transform:translateY(-8px)}
+        .process-click .number{
+            transition:.35s;
+        }
+        .process-click.open .number{
+            transform:rotate(360deg) scale(1.08);
+        }
+
+        @keyframes titleFloat{
+            0%,100%{transform:translateY(0) rotate(-1deg)}
+            50%{transform:translateY(-10px) rotate(1deg)}
+        }
+        @keyframes tagFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+        @keyframes buttonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+        @keyframes loginPulse{0%,100%{box-shadow:0 7px 18px rgba(217,111,155,.22)}50%{box-shadow:0 7px 25px rgba(217,111,155,.42)}}
+        @keyframes orb{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(15px,-15px) rotate(12deg)}}
+        @keyframes sparkle{0%,100%{transform:scale(.75) rotate(0);opacity:.4}50%{transform:scale(1.25) rotate(25deg);opacity:1}}
+
+        @media(max-width:767px){
+            .navbar-nav>li:last-child>a{margin-left:3px}
+            .washe-title{font-size:78px!important;letter-spacing:4px}
+            .hero{min-height:auto;padding:65px 0 80px}
+            .laundry-art{width:300px;height:300px;margin-top:45px}
+        }
+        .washe-title{
+            font-size:76px!important;
+            line-height:1;
+            letter-spacing:6px;
+            font-weight:900!important;
+            color:var(--pink-dark);
+            margin:10px 0 5px!important;
+        }
+        .washe-tagline{
+            font-size:25px;
+            font-weight:700;
+            margin:0 0 20px;
+        }
+        .service-click{
+            cursor:pointer;
+            user-select:none;
+        }
+        .service-more{
+            margin-top:14px;
+            color:var(--pink-dark);
+            font-weight:800;
+            font-size:13px;
+        }
+        .service-detail{
+            display:none;
+            margin-top:14px;
+            padding-top:14px;
+            border-top:1px dashed #f3a6c1;
+            color:#806875;
+            line-height:1.65;
+            font-size:14px;
+        }
+        .service-card.open .service-detail{display:block}
+        .service-card.open .service-more{font-size:0}
+        .service-card.open .service-more:after{
+            content:"Klik untuk tutup −";
+            font-size:13px;
+        }
+
+        .calculator{
+            background:#fff;
+            border-radius:25px;
+            padding:40px;
+            box-shadow:0 15px 40px rgba(217,111,155,.12);
+        }
+
+        .calculator label{font-weight:700;margin-bottom:9px}
+        .form-control,.form-control:focus{
+            border:2px solid #f4d6e1;
+            border-radius:12px;
+            box-shadow:none;
+            height:48px;
+        }
+
+        input[type=range]{accent-color:var(--pink-dark);height:8px}
+        .kg-number{font-size:44px;font-weight:800;color:var(--pink-dark);text-align:center}
+        .estimate{
+            margin-top:20px;
+            padding:25px;
+            background:var(--pink-soft);
+            border-radius:18px;
+            text-align:center;
+        }
+
+        .estimate small{display:block;color:#806875}
+        .estimate strong{font-size:35px;color:var(--pink-dark)}
+
+        .process-card{
+            text-align:center;
+            padding:20px;
+            position:relative;
+            margin-bottom:25px;
+        }
+
+        .number{
+            width:65px;height:65px;
+            margin:0 auto 18px;
+            border-radius:50%;
+            background:var(--pink);
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:24px;
+            font-weight:800;
+        }
+
+        .process-card h4{font-weight:800}
+        .process-card p{color:#806875;line-height:1.6}
+
+        .delivery{
+            background:var(--pink);
+            color:#fff;
+            border-radius:30px;
+            padding:60px 45px;
+            overflow:hidden;
+            position:relative;
+        }
+
+        .delivery h2{font-weight:800;font-size:36px}
+        .delivery p{line-height:1.8}
+        .delivery .btn-pink{background:#fff;color:var(--pink-dark)!important}
+
+        .status-box{
+            background:#fff;
+            border-radius:22px;
+            padding:30px;
+            box-shadow:0 10px 30px rgba(217,111,155,.1);
+        }
+
+        .timeline{
+            display:flex;
+            justify-content:space-between;
+            gap:8px;
+            margin-top:30px;
+            flex-wrap:wrap;
+        }
+
+        .timeline-item{
+            flex:1;
+            min-width:120px;
+            text-align:center;
+            position:relative;
+        }
+
+        .timeline-item .circle{
+            width:45px;height:45px;
+            margin:0 auto 10px;
+            border-radius:50%;
+            background:var(--pink);
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:800;
+        }
+
+        .timeline-item p{font-size:13px;font-weight:600}
+
+        .benefit{
+            background:#fff;
+            border-radius:18px;
+            padding:25px;
+            margin-bottom:20px;
+            box-shadow:0 8px 25px rgba(217,111,155,.08);
+            transition:.3s;
+        }
+
+        .benefit:hover{transform:translateX(6px)}
+        .benefit strong{font-size:17px}
+        .benefit p{margin:8px 0 0;color:#806875;line-height:1.6}
+
+        .faq .panel{
+            border:0;
+            border-radius:14px;
+            overflow:hidden;
+            box-shadow:none;
+            margin-bottom:12px;
+        }
+
+        .faq .panel-heading{
+            background:#fff;
+            padding:18px 20px;
+            border:0;
+        }
+
+        .faq .panel-heading a{
+            color:var(--text);
+            font-weight:700;
+            text-decoration:none;
+            display:block;
+        }
+
+        .faq .panel-body{
+            color:#806875;
+            line-height:1.7;
+            background:#fff;
+        }
+
+        .cta{
+            padding:70px 0;
+            text-align:center;
+            background:#fff;
+        }
+
+        .cta h2{font-size:38px;font-weight:800}
+
+        footer{
+            background:var(--pink-dark);
+            color:#fff;
+            padding:45px 0 20px;
+        }
+
+        footer h4{font-weight:800}
+        footer p{opacity:.9;line-height:1.7}
+        .footer-bottom{
+            border-top:1px solid rgba(255,255,255,.3);
+            margin-top:30px;
+            padding-top:20px;
+            text-align:center;
+        }
+
+        .reveal{
+            opacity:0;
+            transform:translateY(35px);
+            transition:opacity .7s ease,transform .7s ease;
+        }
+
+        .reveal.show{opacity:1;transform:translateY(0)}
+
+        @keyframes float{
+            0%,100%{transform:translateY(0)}
+            50%{transform:translateY(-16px)}
+        }
+
+        @keyframes spin{
+            from{transform:rotate(0deg)}
+            to{transform:rotate(360deg)}
+        }
+
+        @keyframes bubble{
+            0%,100%{transform:translateY(0) scale(1);opacity:.8}
+            50%{transform:translateY(-35px) scale(1.2);opacity:.35}
+        }
+
+        @media(max-width:767px){
+            .hero{padding:55px 0;min-height:auto;text-align:center}
+            .hero h1{font-size:38px}
+            .hero p{margin:auto}
+            .laundry-art{width:300px;height:300px;margin-top:40px}
+            .washer{transform:scale(.85)}
+            .washe-brand{
+            letter-spacing:1px;
+            font-size:24px!important;
+        }
+        .washe-brand span{font-size:20px}
+        .washe-title{
+            font-size:76px!important;
+            line-height:1;
+            letter-spacing:6px;
+            font-weight:900!important;
+            color:var(--pink-dark);
+            margin:10px 0 5px!important;
+        }
+        .washe-tagline{
+            font-size:25px;
+            font-weight:700;
+            margin:0 0 20px;
+        }
+        .service-click{
+            cursor:pointer;
+            user-select:none;
+        }
+        .service-more{
+            margin-top:14px;
+            color:var(--pink-dark);
+            font-weight:800;
+            font-size:13px;
+        }
+        .service-detail{
+            display:none;
+            margin-top:14px;
+            padding-top:14px;
+            border-top:1px dashed #f3a6c1;
+            color:#806875;
+            line-height:1.65;
+            font-size:14px;
+        }
+        .service-card.open .service-detail{display:block}
+        .service-card.open .service-more{font-size:0}
+        .service-card.open .service-more:after{
+            content:"Klik untuk tutup −";
+            font-size:13px;
+        }
+
+        .calculator{padding:25px}
+            .delivery{padding:40px 25px}
+            .section{padding:60px 0}
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-custom">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navLaundry">
+                <span class="sr-only">Menu</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand washe-brand" href="#beranda"><span>🫧</span> WASHÉ</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navLaundry">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#beranda">Beranda</a></li>
+                <li><a href="#layanan">Layanan</a></li>
+                <li><a href="#harga">Harga</a></li>
+                <li><a href="#cara">Cara Kerja</a></li>
+                <li><a href="#antar">Antar Jemput</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+                <li><a href="index.php">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="beranda">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="reveal">
+                    <p style="font-weight:800;color:var(--pink-dark);">✨ LAUNDRY CEPAT & PRAKTIS</p>
+                    <h1 class="washe-title">WASHÉ</h1>
+                    <h2 class="washe-tagline">Fresh clothes, fresh mood.</h2>
+                    <p>
+                        Laundry yang bikin pakaian bersih, rapi, wangi, dan siap dipakai lagi. Pilih layanan yang kamu butuhkan, cek estimasi harga, lalu serahkan urusan cucian ke WASHÉ.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="index.php" class="btn-pink">Pesan Sekarang →</a>
+                        <a href="#layanan" class="btn-outline-pink">Lihat Layanan</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="laundry-art">
+                    <div class="bubble b1"></div>
+                    <div class="bubble b2"></div>
+                    <div class="bubble b3"></div>
+                    <div class="washer">
+                        <div class="washer-top">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <div class="door"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATISTIK -->
+<section class="stats">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="stat-box reveal">
+                    <h3>100+</h3>
+                    <p>Pelanggan</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="stat-box reveal">
+                    <h3>500+</h3>
+                    <p>Pesanan Laundry</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="stat-box reveal">
+                    <h3>24 Jam</h3>
+                    <p>Pelayanan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LAYANAN -->
+<section class="section" id="layanan">
+    <div class="container">
+        <div class="section-title reveal">
+            <h2>Layanan WASHÉ</h2>
+            <p>Klik layanan yang kamu butuhkan untuk melihat detailnya.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="service-card service-click reveal" onclick="showService(this)">
+                    <div class="service-icon">👕</div>
+                    <h4>Cuci Pakaian</h4>
+                    <p>Cocok untuk pakaian sehari-hari, seragam, celana, dan pakaian lainnya.</p>
+                    <div class="price">Mulai Rp7.000 / kg</div>
+                    <div class="service-more">Klik untuk lihat detail +</div>
+                    <div class="service-detail">Dicuci, dibilas, dikeringkan, lalu dilipat agar pakaian siap dipakai kembali. Cocok untuk cucian harian dan seragam.</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="service-card service-click reveal" onclick="showService(this)">
+                    <div class="service-icon">🧥</div>
+                    <h4>Jaket & Hoodie</h4>
+                    <p>Perawatan pakaian tebal agar tetap bersih dan nyaman digunakan.</p>
+                    <div class="price">Mulai Rp9.000 / kg</div>
+                    <div class="service-more">Klik untuk lihat detail +</div>
+                    <div class="service-detail">Perawatan untuk bahan yang lebih tebal seperti jaket dan hoodie, dengan proses yang lebih teliti.</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="service-card service-click reveal" onclick="showService(this)">
+                    <div class="service-icon">🛏️</div>
+                    <h4>Bedcover</h4>
+                    <p>Pembersihan perlengkapan tidur dengan proses yang lebih teliti.</p>
+                    <div class="price">Mulai Rp12.000 / kg</div>
+                    <div class="service-more">Klik untuk lihat detail +</div>
+                    <div class="service-detail">Bedcover dibersihkan dengan perhatian pada ukuran dan bahan agar tetap bersih dan nyaman digunakan.</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="service-card service-click reveal" onclick="showService(this)">
+                    <div class="service-icon">👟</div>
+                    <h4>Sepatu</h4>
+                    <p>Layanan khusus untuk membersihkan sepatu dari debu dan kotoran.</p>
+                    <div class="price">Mulai Rp20.000</div>
+                    <div class="service-more">Klik untuk lihat detail +</div>
+                    <div class="service-detail">Pembersihan bagian luar dan area yang kotor agar sepatu kembali terlihat lebih bersih dan segar.</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="service-card service-click reveal" onclick="showService(this)">
+                    <div class="service-icon">🧸</div>
+                    <h4>Boneka</h4>
+                    <p>Membersihkan boneka agar kembali bersih, segar, dan nyaman disimpan.</p>
+                    <div class="price">Mulai Rp15.000</div>
+                    <div class="service-more">Klik untuk lihat detail +</div>
+                    <div class="service-detail">Boneka dibersihkan dengan proses yang disesuaikan dengan ukuran dan kondisinya.</div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="service-card service-click reveal" onclick="showService(this)">
+                    <div class="service-icon">✨</div>
+                    <h4>Barang Khusus</h4>
+                    <p>Untuk barang lain yang membutuhkan penanganan khusus.</p>
+                    <div class="price">Hubungi Kami</div>
+                    <div class="service-more">Klik untuk lihat detail +</div>
+                    <div class="service-detail">Untuk barang di luar layanan utama. Harga dan proses disesuaikan setelah barang diperiksa.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- KALKULATOR -->
+<section class="section" id="harga">
+    <div class="container">
+        <div class="section-title reveal">
+            <h2>Estimasi Harga</h2>
+            <p>Atur layanan dan berat cucian untuk melihat perkiraan biaya.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="calculator reveal">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="service">Pilih Layanan</label>
+                            <select id="service" class="form-control">
+                                <option value="7000">Cuci Pakaian — Rp7.000/kg</option>
+                                <option value="9000">Jaket & Hoodie — Rp9.000/kg</option>
+                                <option value="12000">Bedcover — Rp12.000/kg</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label>Berat Cucian</label>
+                            <div class="kg-number"><span id="kg">1</span> kg</div>
+                            <input type="range" id="weight" min="1" max="15" value="1" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="estimate">
+                        <small>Perkiraan total biaya</small>
+                        <strong id="total">Rp7.000</strong>
+                        <p style="margin:8px 0 0;color:#806875;">
+                            *Harga merupakan estimasi dan dapat menyesuaikan jenis barang serta kondisi laundry.
+                        </p>
+                    </div>
+
+                    <div style="text-align:center;margin-top:25px;">
+                        <a href="index.php" class="btn-pink">Login untuk Memesan →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CARA KERJA -->
+<section class="section" id="cara">
+    <div class="container">
+        <div class="section-title reveal">
+            <h2>Cara Kerja</h2>
+            <p>Pesan laundry tanpa perlu bingung.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="process-card process-click reveal" onclick="showProcess(this)">
+                    <div class="number">1</div>
+                    <h4>Login</h4>
+                    <p>Masuk menggunakan akun yang sudah terdaftar.</p>
+                    <div class="process-more">Klik untuk detail +</div>
+                    <div class="process-detail">Klik tombol Login di navbar, lalu masukkan username dan password untuk masuk ke sistem.</div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="process-card process-click reveal" onclick="showProcess(this)">
+                    <div class="number">2</div>
+                    <h4>Pesan</h4>
+                    <p>Pilih layanan dan masukkan detail laundry kamu.</p>
+                    <div class="process-more">Klik untuk detail +</div>
+                    <div class="process-detail">Pilih jenis layanan, masukkan detail pakaian atau barang, lalu periksa kembali pesanan sebelum dikirim.</div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="process-card process-click reveal" onclick="showProcess(this)">
+                    <div class="number">3</div>
+                    <h4>Diproses</h4>
+                    <p>Pesanan diterima dan laundry mulai dikerjakan.</p>
+                    <div class="process-more">Klik untuk detail +</div>
+                    <div class="process-detail">Pesanan akan masuk ke proses laundry sesuai layanan yang dipilih dan statusnya dapat dipantau melalui sistem.</div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="process-card process-click reveal" onclick="showProcess(this)">
+                    <div class="number">4</div>
+                    <h4>Selesai</h4>
+                    <p>Laundry siap diambil atau dikirim ke alamat pelanggan.</p>
+                    <div class="process-more">Klik untuk detail +</div>
+                    <div class="process-detail">Setelah selesai, laundry dapat diambil atau dikirim sesuai pilihan yang tersedia pada pesanan.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ANTAR JEMPUT -->
+<section class="section" id="antar">
+    <div class="container">
+        <div class="delivery reveal">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2>🚚 Antar & Jemput Laundry</h2>
+                    <p>
+                        Tidak sempat datang ke tempat laundry? Gunakan layanan antar dan jemput.
+                        Detail alamat dan pilihan pengantaran dapat diatur setelah kamu login dan membuat pesanan.
+                    </p>
+                </div>
+                <div class="col-md-4 text-center" style="padding-top:25px;">
+                    <a href="index.php" class="btn-pink">Mulai Pesan</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATUS -->
+<section class="section">
+    <div class="container">
+        <div class="section-title reveal">
+            <h2>Pantau Status Laundry</h2>
+            <p>Setelah melakukan pemesanan, status laundry dapat dipantau melalui sistem.</p>
+        </div>
+
+        <div class="status-box reveal">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="circle">1</div>
+                    <p>Menunggu Konfirmasi</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="circle">2</div>
+                    <p>Dikonfirmasi</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="circle">3</div>
+                    <p>Sedang Dicuci</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="circle">4</div>
+                    <p>Sedang Diproses</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="circle">5</div>
+                    <p>Siap Diambil</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="circle">6</div>
+                    <p>Sedang Diantar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- KEUNGGULAN -->
+<section class="section">
+    <div class="container">
+        <div class="section-title reveal">
+            <h2>Kenapa Laundry Kami?</h2>
+            <p>Beberapa hal yang membuat proses laundry jadi lebih praktis.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="benefit reveal">
+                    <strong>⚡ Proses Praktis</strong>
+                    <p>Pemesanan dilakukan melalui sistem sehingga detail pesanan lebih mudah dicatat.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="benefit reveal">
+                    <strong>💰 Estimasi Harga</strong>
+                    <p>Pelanggan dapat melihat perkiraan biaya berdasarkan layanan dan berat cucian.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="benefit reveal">
+                    <strong>📋 Status Pesanan</strong>
+                    <p>Perkembangan pesanan dapat diketahui dari status yang tersedia di sistem.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="benefit reveal">
+                    <strong>🚚 Antar & Jemput</strong>
+                    <p>Pilihan antar dan jemput membantu pelanggan yang tidak sempat datang langsung.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq">
+    <div class="container">
+        <div class="section-title reveal">
+            <h2>Pertanyaan Umum</h2>
+            <p>Beberapa pertanyaan yang sering ditanyakan pelanggan.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default reveal">
+                    <div class="panel-heading">
+                        <a data-toggle="collapse" href="#faq1">Bagaimana cara melakukan pemesanan?</a>
+                    </div>
+                    <div id="faq1" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            Login terlebih dahulu, kemudian pilih layanan dan isi detail pesanan pada dashboard pelanggan.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default reveal">
+                    <div class="panel-heading">
+                        <a data-toggle="collapse" href="#faq2">Apakah harga di halaman ini harga final?</a>
+                    </div>
+                    <div id="faq2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            Belum. Harga yang ditampilkan merupakan estimasi. Harga akhir dapat menyesuaikan layanan dan kondisi barang.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default reveal">
+                    <div class="panel-heading">
+                        <a data-toggle="collapse" href="#faq3">Bagaimana cara melihat status laundry?</a>
+                    </div>
+                    <div id="faq3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            Setelah login dan membuat pesanan, pelanggan dapat melihat perkembangan pesanan melalui halaman status/riwayat pada sistem.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default reveal">
+                    <div class="panel-heading">
+                        <a data-toggle="collapse" href="#faq4">Apakah tersedia layanan antar dan jemput?</a>
+                    </div>
+                    <div id="faq4" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            Tersedia sesuai layanan yang disediakan laundry. Detail pengantaran dapat diatur saat melakukan pemesanan.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="container reveal">
+        <h2>Siap, biar cucian kami yang urus? 🫧</h2>
+        <p style="color:#806875;margin:15px auto 25px;">
+            Login dan buat pesanan laundry kamu sekarang.
+        </p>
+        <a href="index.php" class="btn-pink">Pesan Laundry Sekarang →</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="kontak">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <h4>🫧 WASHÉ</h4>
+                <p>
+                    Sistem Informasi Laundry untuk membantu proses pemesanan,
+                    pengelolaan, dan pemantauan laundry menjadi lebih praktis.
+                </p>
+            </div>
+
+            <div class="col-md-3">
+                <h4>Menu</h4>
+                <p>
+                    <a href="#beranda" style="color:#fff;">Beranda</a><br>
+                    <a href="#layanan" style="color:#fff;">Layanan</a><br>
+                    <a href="#harga" style="color:#fff;">Harga</a><br>
+                    <a href="#cara" style="color:#fff;">Cara Kerja</a>
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <h4>Kontak</h4>
+                <p>
+                    📍 Alamat Laundry<br>
+                    📞 08xxxxxxxxxx<br>
+                    ✉️ laundry@email.com<br>
+                    🕐 Senin - Minggu, 08.00 - 20.00
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2026 WASHÉ Laundry. All Rights Reserved.
+        </div>
+    </div>
+</footer>
+
+<script>
+    function showService(card){
+        card.classList.toggle("open");
+    }
+
+    function showProcess(card){
+        card.classList.toggle("open");
+    }
+
+    // Kalkulator harga
+    function formatRupiah(angka){
+        return "Rp" + angka.toLocaleString("id-ID");
+    }
+
+    function updatePrice(){
+        var service = parseInt(document.getElementById("service").value);
+        var weight = parseInt(document.getElementById("weight").value);
+        var total = service * weight;
+
+        document.getElementById("kg").innerText = weight;
+        document.getElementById("total").innerText = formatRupiah(total);
+    }
+
+    document.getElementById("service").addEventListener("change", updatePrice);
+    document.getElementById("weight").addEventListener("input", updatePrice);
+
+    // Animasi saat elemen masuk layar
+    var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+            if(entry.isIntersecting){
+                entry.target.classList.add("show");
+            }
+        });
+    }, {threshold:0.12});
+
+    document.querySelectorAll(".reveal").forEach(function(el){
+        observer.observe(el);
+    });
+</script>
+
+</body>
+</html>
+
